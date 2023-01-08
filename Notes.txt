@@ -1,0 +1,29 @@
+Notes on the prospective approach (quick_som):
+
+1. Malaria imputation turned on
+2. Given the gap between the pop sources and our analysis period, we
+now have an early y start just for creating demography time series that start
+in 2014, we then correct this later.
+3. In the mortality estimation script correct the initial ts to only be for the
+period of interest.
+4. Convert scripts capture most of the weird foibles in updating the data sets
+5. The imputation has issues with the long lagged variables in the first year,
+so need to figure out what's going on there/how that should be done.s
+6. No refugees data available so commented this out
+7. Commented out the created of xobs in the predictors, i.e. binding with survey data
+8.
+
+
+Notes on dec_som:
+
+1. Have renamed cause of deaths based on a look up table (mast::cause_of_death)
+2. Belet Weyne with population of IDPs > than population total in all population sources.
+3. Need to flag the proportion of IDPs and the population creation process. Seems iffy...
+4. Have just averaged Belet Weyne to other admin prop_idps for now
+
+TODO:
+
+1. Data cleaning for smart surveys:
+  - removal of incorrect characters (`)
+  - detecting incorrect cluster assignments
+  - flipped column entries (e.g. sex and age wrong way round)

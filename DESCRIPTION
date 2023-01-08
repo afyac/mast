@@ -1,0 +1,37 @@
+Package: mast
+Title: Munging and samrat tools
+Version: 0.1.0
+Authors@R: 
+    c(person(given = "OJ",
+             family = "Watson",
+             role = c("aut", "cre"),
+             email = "oj.watson@hotmail.co.uk",
+             comment = c(ORCID = "0000-0003-2374-0741")))
+Description: Package for data munging (cleaning, collating etc) related
+  to the samrat package.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
+Imports: 
+    dplyr,
+    magrittr,
+    progress,
+    readxl,
+    rvest,
+    rlang,
+    cowplot,
+    stringdist,
+    stringi,
+    tidyselect,
+    xml2
+Remotes:
+    afyac/samrat
+Depends: 
+    R (>= 2.10)

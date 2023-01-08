@@ -1,0 +1,186 @@
+`%||%` <- function(a, b) { # nolint
+  if (is.null(a)) b else a
+}
+
+
+#------------------------------------------------
+#' read_mast_file
+#'
+#' \code{read_mast_file} read samrat package file
+#'
+#' @description Load a file from within the inst/extdata folder of the
+#'   [mast] package. File extension must be one of .csv, .rds, or .xlsx
+#'
+#' @param name Name of a file within the inst/extdata folder.
+#' @param sheet Name of sheet in xlsx file. Default = `NULL`
+#'
+#' @importFrom utils read.csv
+#' @importFrom readxl read_xlsx
+#' @keywords internal
+
+read_mast_file <- function(name, sheet = NULL) {
+
+  # check that valid file extension
+  ext <- strsplit(name, "\\.")[[1]]
+  ext <- ext[length(ext)]
+  if (is.element(ext, c("csv", "rds", "xlsx")) == FALSE) {
+    stop("file extension not valid")
+  }
+
+  # get full file path
+  path <- system.file("extdata/", name, package = "mast", mustWork = TRUE)
+
+  # read in file
+  if (ext == "rds") {
+    ret <- readRDS(path)
+  } else if (ext == "csv") {
+    ret <- utils::read.csv(file = path, header = TRUE, sep = ",")
+  } else {
+    ret <- readxl::read_xlsx(path, sheet = sheet)
+  }
+
+  return(ret)
+
+}
+
+
+#------------------------------------------------
+#' par_list_from_df
+#'
+#' \code{par_list_from_df} convert data.frame into formatted list
+#'
+#' @description Convert data frame with columns value and parameter into
+#'   named list with numeric values formatted
+#'
+#' @param pars \code{data.frame} of parameters and values
+#' @param value String for value column. Default = `"value"`
+#' @param parameter String for value column. Default = `"parameter"`
+#'
+#' @keywords internal
+
+par_list_from_df <- function(pars, value = "value", parameter = "parameter") {
+
+  # turn this into a suitable list of our parameters
+  pars_list <- split(pars[[value]], pars[[parameter]])
+  for (i in seq_along(pars_list)) {
+    if (suppressWarnings(!is.na(as.numeric(pars_list[[i]])))) {
+      pars_list[[i]] <- as.numeric(pars_list[[i]])
+    }
+  }
+
+  return(pars_list)
+
+}
+
+#' @noRd
+#' @keywords internal
+quiet_message <- function(msg) {
+
+  if (mast_loud()) {
+    message(msg)
+  }
+
+}
+
+#' @noRd
+#' @keywords internal
+mast_loud <- function(){
+  if (Sys.getenv("MAST_LOUD") == "TRUE") {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}
+
+#' @noRd
+#' @keywords internal
+match_clean <- function(a,b, quiet=TRUE){
+  a <- gsub("[[:punct:][:space:]]","",tolower(stringi::stri_trans_general(a, "latin-ascii")))
+  b <- gsub("[[:punct:][:space:]]","",tolower(stringi::stri_trans_general(b, "latin-ascii")))
+  ret <- match(a,b)
+  if(sum(is.na(ret)>0)){
+    dists <- stringdist::seq_distmatrix(lapply(a,utf8ToInt),lapply(b,utf8ToInt))
+    ret[is.na(ret)] <- apply(dists[which(is.na(ret)),,drop=FALSE],1,which.min)
+    if(!quiet){
+      print(unique(cbind(a,b[ret])))
+    }
+  }
+  return(ret)
+}
+
+#------------------------------------------------
+#' Save Figures Nicely
+#'
+#' \code{save_figs} saves ggplot and similar figures to file
+#'
+#' @description Saves ggplot and similar figures to both a pdf and
+#'   to a png with the same size. PDF can then be easily edited after
+#'   if needed for quick or complicated figure annotation.
+#'
+#' @param name Name of saved file (no file ending required). E.g. "my_plot"
+#' @param fig ggplot or similar object
+#' @param width Width of figure in inches. Default = 6
+#' @param height Height of figure in inches. Default = 6
+#' @param root Directory where figures are saved. Default is :
+#'   `file.path(here::here(), "analysis/plots")`
+#'
+#' @importFrom utils read.csv
+#' @importFrom readxl read_xlsx
+#' @importFrom grDevices dev.off pdf
+#' @keywords internal
+save_figs <- function(name,
+         fig,
+         width = 6,
+         height = 6,
+         root = file.path(here::here(), "analysis/plots")) {
+
+  dir.create(root, showWarnings = FALSE)
+  fig_path <- function(name) {paste0(root, "/", name)}
+
+  cowplot::save_plot(filename = fig_path(paste0(name,".png")),
+                     plot = fig,
+                     base_height = height,
+                     base_width = width)
+
+  pdf(file = fig_path(paste0(name,".pdf")), width = width, height = height)
+  print(fig)
+  dev.off()
+
+}
+
+
+# epiweekToDate<-function(year,weekno,firstday="Sunday"){
+#   if(!(firstday=="Sunday"|| firstday=="Monday")){
+#     print("Wrong firstday!")
+#     break
+#   }
+#   if(year<0 || weekno<0){
+#     print("Wrong Input!")
+#     break
+#   }
+#
+#   jan4=strptime(paste(year,1,4,sep="-"),format="%Y-%m-%d")
+#   wday=jan4$wday
+#   wday[wday==0]=7
+#   wdaystart=ifelse(firstday=="Sunday",7,1)
+#   if(wday== wdaystart) weekstart=jan4
+#   if(wday!= wdaystart) weekstart=jan4-(wday-ifelse(firstday=="Sunday",0,1))*86400
+#
+#   jan4_2=strptime(paste(year+1,1,4,sep="-"),format="%Y-%m-%d")
+#
+#   wday_2=jan4_2$wday
+#   wday_2[wday_2==0]=7
+#   wdaystart_2=ifelse(firstday=="Sunday",7,1)
+#   if(wday_2== wdaystart_2) weekstart_2=jan4_2
+#   if(wday_2!= wdaystart_2) weekstart_2=jan4_2-(wday_2-ifelse(firstday=="Sunday",0,1))*86400
+#
+#   if(weekno>((weekstart_2-weekstart)/7)){
+#     print(paste("There are only ",(weekstart_2-weekstart)/7," weeks in ",year,"!",sep=""))
+#     break
+#   }
+#
+#   d0=weekstart+(weekno-1)*7*86400
+#   d1=weekstart+(weekno-1)*7*86400+6*86400
+#
+#   return(list("d0"=strptime(d0,format="%Y-%m-%d"),"d1"=strptime(d1,format="%Y-%m-%d")))
+# }

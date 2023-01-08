@@ -1,0 +1,41 @@
+template:
+  params:
+    bootswatch: flatly
+
+reference:
+  - title: "FSNAU"
+    desc: "Functions for working with FSNAU files"
+
+  - title: "SMART"
+    desc: "Functions for working with SMART files"
+
+  - title: "samrat"
+    desc: >
+      "Series of internal and external functions used for creating
+      files ready for samrat."
+
+  - title: "internal"
+    desc: "Internal Functions"
+    contents:
+      - has_keyword("internal")
+
+navbar:
+  type: default
+  left:
+    - href: index.html
+      icon: fa-home
+    - text: Introduction
+      href: articles/introduction.html
+    - text: Reference
+      href: reference/index.html
+    - text: Articles
+      menu:
+      - text: Introduction to mast
+        href: articles/introduction.html
+      - text: Structure to mast
+        href: articles/structure.html
+    - text: News
+      href: news/index.html
+  right:
+    - icon: fa-github
+      href: https://github.com/OJWatson/mast
