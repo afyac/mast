@@ -6,7 +6,7 @@
 #------------------------------------------------
 #' read_mast_file
 #'
-#' \code{read_mast_file} read samrat package file
+#' \code{read_mast_file} read mast package file
 #'
 #' @description Load a file from within the inst/extdata folder of the
 #'   [mast] package. File extension must be one of .csv, .rds, or .xlsx
@@ -40,35 +40,6 @@ read_mast_file <- function(name, sheet = NULL) {
   }
 
   return(ret)
-
-}
-
-
-#------------------------------------------------
-#' par_list_from_df
-#'
-#' \code{par_list_from_df} convert data.frame into formatted list
-#'
-#' @description Convert data frame with columns value and parameter into
-#'   named list with numeric values formatted
-#'
-#' @param pars \code{data.frame} of parameters and values
-#' @param value String for value column. Default = `"value"`
-#' @param parameter String for value column. Default = `"parameter"`
-#'
-#' @keywords internal
-
-par_list_from_df <- function(pars, value = "value", parameter = "parameter") {
-
-  # turn this into a suitable list of our parameters
-  pars_list <- split(pars[[value]], pars[[parameter]])
-  for (i in seq_along(pars_list)) {
-    if (suppressWarnings(!is.na(as.numeric(pars_list[[i]])))) {
-      pars_list[[i]] <- as.numeric(pars_list[[i]])
-    }
-  }
-
-  return(pars_list)
 
 }
 

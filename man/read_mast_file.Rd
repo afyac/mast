@@ -16,6 +16,6 @@ Load a file from within the inst/extdata folder of the
 \link{mast} package. File extension must be one of .csv, .rds, or .xlsx
 }
 \details{
-\code{read_mast_file} read samrat package file
+\code{read_mast_file} read mast package file
 }
 \keyword{internal}
