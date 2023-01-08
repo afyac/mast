@@ -3,10 +3,10 @@
 <!-- badges: start -->
 
 [![R build
-status](https://github.com/OJWatson/mast/workflows/R-CMD-check/badge.svg)](https://github.com/OJWatson/mast/actions)
-[![CodeFactor](https://www.codefactor.io/repository/github/OJWatson/mast/badge)](https://www.codefactor.io/repository/github/OJWatson/mast)
-[![codecov.io](https://codecov.io/github/OJWatson/mast/coverage.svg?branch=main)](https://codecov.io/github/OJWatson/mast?branch=main)
-[![R-CMD-check](https://github.com/OJWatson/mast/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/OJWatson/mast/actions/workflows/R-CMD-check.yaml)
+status](https://github.com/afyac/mast/workflows/R-CMD-check/badge.svg)](https://github.com/afyac/mast/actions)
+[![CodeFactor](https://www.codefactor.io/repository/github/afyac/mast/badge)](https://www.codefactor.io/repository/github/afyac/mast)
+[![codecov.io](https://codecov.io/github/afyac/mast/coverage.svg?branch=main)](https://codecov.io/github/afyac/mast?branch=main)
+[![R-CMD-check](https://github.com/afyac/mast/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/afyac/mast/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 ## Installation
@@ -14,9 +14,13 @@ status](https://github.com/OJWatson/mast/workflows/R-CMD-check/badge.svg)](https
 To install `mast`:
 
 ``` r
-remotes::install_github("OJWatson/mast", upgrade = FALSE)
+remotes::install_github("afyac/mast", upgrade = FALSE)
 ```
 
-## License
+### Licenses
 
-OJ Watson
+Code: [MIT](http://opensource.org/licenses/MIT) year: 2023, copyright
+holder: OJ Watson
+
+Data: [CC-0](http://creativecommons.org/publicdomain/zero/1.0/)
+attribution requested in reuse
