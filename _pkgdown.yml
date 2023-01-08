@@ -3,16 +3,27 @@ template:
     bootswatch: flatly
 
 reference:
-  - title: "FSNAU"
+  - title: "FSNAU Functions"
     desc: "Functions for working with FSNAU files"
+    contents:
+      - fsnau_dashboard
 
-  - title: "SMART"
+  - title: "SMART Functions"
     desc: "Functions for working with SMART files"
+    contents:
+      - admin_match
 
-  - title: "samrat"
+  - title: "SMART Data"
+    desc: "Datasets for helping work/clean SMART files"
+    contents:
+      - causes_of_death
+
+  - title: "Datasets"
     desc: >
-      "Series of internal and external functions used for creating
-      files ready for samrat."
+      "Other datasets to help with cleaning and mergind datasets"
+    contents:
+      - som_admins
+      - som_shp
 
   - title: "internal"
     desc: "Internal Functions"
