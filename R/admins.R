@@ -2,7 +2,7 @@
 #'
 #' @param admins Admins to match
 #' @param country Country to match admins against. Default = "SOM"
-#'
+#' @export
 admin_match <- function(admins, country = "SOM") {
 
  if(country == "SOM") {
