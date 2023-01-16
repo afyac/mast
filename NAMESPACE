@@ -2,6 +2,7 @@
 
 export("%>%")
 export(admin_match)
+export(chr_to_num)
 export(fsnau_dashboard)
 importFrom(grDevices,dev.off)
 importFrom(grDevices,pdf)

@@ -45,6 +45,12 @@ fsnau_dashboard <- function(years = 2013:2022) {
 
 }
 
+#' Convert character number to numeric
+#'
+#' @details If argument is a character, removes commas and converts
+#' @param x Character vector to convert
+#' @return Numeric vector
+#' @export
 chr_to_num <- function(x) {
 
   if(is.character(x)) {
