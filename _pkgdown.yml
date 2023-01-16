@@ -7,6 +7,7 @@ reference:
     desc: "Functions for working with FSNAU files"
     contents:
       - fsnau_dashboard
+      - chr_to_num
 
   - title: "SMART Functions"
     desc: "Functions for working with SMART files"
