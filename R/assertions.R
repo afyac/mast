@@ -20,6 +20,14 @@ nice_format <- function(x) {
 
 #### BASIC OBJECT TYPES ########################################################
 
+# Pass asserts to allow nulls before checks
+#' @noRd
+assert_null_and_func <- function(x, func, name = deparse(substitute(x))){
+  if (!is.null(x)) {
+    func(x, name)
+  }
+}
+
 #------------------------------------------------
 # x is NULL
 #' @noRd
