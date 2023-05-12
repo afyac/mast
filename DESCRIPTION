@@ -1,7 +1,7 @@
 Package: mast
 Title: Munging and samrat tools
 Version: 0.1.0
-Authors@R:
+Authors@R: c(
     person(given = "OJ",
            family = "Watson",
            role = c("aut", "cre"),
@@ -12,6 +12,7 @@ Authors@R:
            role = c("aut"),
            email = "mohamedayusuf87@gmail.com",
            comment = c(ORCID = "0000-0002-9339-4613"))
+           )
 Description: Package for data munging (cleaning, collating etc) related
   to the samrat package.
 License: MIT + file LICENSE
