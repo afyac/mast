@@ -6,7 +6,12 @@ Authors@R:
              family = "Watson",
              role = c("aut", "cre"),
              email = "oj.watson@hotmail.co.uk",
-             comment = c(ORCID = "0000-0003-2374-0741")))
+             comment = c(ORCID = "0000-0003-2374-0741")),
+             (given = "Mo",
+             family = "Yusuf",
+             role = c("aut", "cre"),
+             email = "mohamedayusuf87@gmail.com",
+             comment = c(ORCID = "0000-0002-9339-4613"))
 Description: Package for data munging (cleaning, collating etc) related
   to the samrat package.
 License: MIT + file LICENSE
@@ -21,6 +26,11 @@ Suggests:
 VignetteBuilder: knitr
 Imports: 
     dplyr,
+    jsonlite, 
+    purrr, 
+    tidyr, 
+    httr, 
+    readr, 
     magrittr,
     progress,
     readxl,
