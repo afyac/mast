@@ -22,9 +22,9 @@ mast_excel_lists <- function(path, sheets = NULL, pattern = NULL, ...) {
   assert_null_and_func(pattern, assert_single_string)
 
   # how are we getting the sheets
-  if(is.null(sheets) && is.null(pattern)) {
+  if (is.null(sheets) && is.null(pattern)) {
     sheets <- readxl::excel_sheets(path)
-  } else if(!is.null(sheets)) {
+  } else if (!is.null(sheets)) {
     all_sheets <- readxl::excel_sheets(path)
     sheets <- all_sheets[sheets %in% all_sheets]
   } else if (is.null(sheets) && !is.null(pattern)) {
@@ -33,7 +33,7 @@ mast_excel_lists <- function(path, sheets = NULL, pattern = NULL, ...) {
   }
 
   # stop if nothing found
-  if(length(sheets) == 0) {
+  if (length(sheets) == 0) {
     stop("No sheets found using sheets/pattern arguments")
   }
 

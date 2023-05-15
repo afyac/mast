@@ -7,17 +7,24 @@ test_that("swalim_climate downloads district information from a valid URL", {
   skip_on_cran() # skip this test on CRAN (requires internet access)
   url <- "https://cdi.faoswalim.org/data/tdi/"
   response <- httr::GET(url)
-  expect_equal(response$status_code, 200) # Use http_status() to access status code
+
+  # Use http_status() to access status code
+  expect_equal(response$status_code, 200)
 })
 
 # Test case 2:------------------------------------------------------------------
-# Test if the district information can be extracted from JSON and if the information
-# is in the correct format
+# Test if the district information can be extracted from JSON and if the
+# information is in the correct format
 test_that("swalim_climate extracts district ID for webscraping correctly", {
+
   skip_on_cran() # Skip this test on CRAN because it requires internet access
+
   url <- "https://cdi.faoswalim.org/data/tdi/"
+
   response <- httr::GET(url)
-  id_df <- jsonlite::fromJSON(httr::content(response, "text"), simplifyVector = TRUE) %>%
+
+  id_df <- jsonlite::fromJSON(httr::content(response, "text"),
+                              simplifyVector = TRUE) %>%
     purrr::transpose() %>%
     as.data.frame() %>%
     dplyr::select(dplyr::contains("district")) %>%
@@ -32,16 +39,23 @@ test_that("swalim_climate extracts district ID for webscraping correctly", {
 })
 
 # Test case 3:------------------------------------------------------------------
-# Test if the CSV files can be downloaded and sense-check the values are in the right range
+# Test if the CSV files can be downloaded and sense-check the values are in the
+# right range
 test_that("swalim_climate downloads and reads CSV files accurately,
           with valid structure and plausible value ranges", {
-            skip_on_cran() # Skip this test on CRAN because it requires internet access
+
+            # Skip this test on CRAN because it requires internet access
+            skip_on_cran()
+
             # Call the swalim_climate function to retrieve the climate data
             climate_data <- swalim_climate()
+
             # Define the expected range of years
             expected_years <- 2002:format(Sys.Date(), "%Y")
+
             # Validate the structure of the dataset
             expect_equal(ncol(climate_data), 11)
+
             expect_equal(colnames(climate_data), c(
               "year", "month", "district", "pcode",
               "rfe", "ndvi", "temp", "pdi", "tdi",

@@ -22,7 +22,7 @@ nice_format <- function(x) {
 
 # Pass asserts to allow nulls before checks
 #' @noRd
-assert_null_and_func <- function(x, func, name = deparse(substitute(x))){
+assert_null_and_func <- function(x, func, name = deparse(substitute(x))) {
   if (!is.null(x)) {
     func(x, name)
   }

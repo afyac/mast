@@ -65,13 +65,13 @@ mast_loud <- function(){
 
 #' @noRd
 #' @keywords internal
-mast_set_loud <- function(){
+mast_set_loud <- function() {
   Sys.setenv("MAST_LOUD" = "TRUE")
 }
 
 #' @noRd
 #' @keywords internal
-mast_set_quiet <- function(){
+mast_set_quiet <- function() {
   Sys.setenv("MAST_LOUD" = "FALSE")
 }
 
@@ -130,4 +130,3 @@ save_figs <- function(name,
   dev.off()
 
 }
-
