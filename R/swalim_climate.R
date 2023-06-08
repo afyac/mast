@@ -91,7 +91,7 @@ swalim_climate <- function(years = 2015:2023) {
       dplyr::filter(district %in% c("Balcad", "Afgooye")) %>%
       dplyr::mutate(district = "Banadir", pcode = 22) %>%
       dplyr::group_by(district, year, month) %>%
-      dplyr::summarise(across(where(is.numeric), mean, na.rm = TRUE))
+      dplyr::summarise(dplyr::across(tidyselect::where(is.numeric), mean, na.rm = TRUE))
 
     # Bind rows and include Benadir onto the  climate dataset.
     combined_dataset <- dplyr::bind_rows(combined_dataset, benadir_values)
