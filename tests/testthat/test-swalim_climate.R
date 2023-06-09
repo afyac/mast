@@ -63,5 +63,5 @@ test_that("swalim_climate downloads and reads CSV files accurately,
             ))
             expect_true(all(unique(climate_data$year) %in% expected_years))
             expect_equal(sort(unique(climate_data$month)), 1:12)
-            expect_equal(length(unique(climate_data$district)), 73)
+            expect_equal(length(unique(climate_data$district)), 74)
           })
