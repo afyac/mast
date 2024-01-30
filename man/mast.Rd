@@ -2,8 +2,8 @@
 % Please edit documentation in R/mast.R
 \docType{package}
 \name{mast}
-\alias{mast}
 \alias{mast-package}
+\alias{mast}
 \title{\pkg{mast} Munging and samrat tools}
 \description{
 Package for data munging (cleaning, collating etc) related
@@ -11,6 +11,11 @@ to the samrat package.
 }
 \author{
 \strong{Maintainer}: OJ Watson \email{oj.watson@hotmail.co.uk} (\href{https://orcid.org/0000-0003-2374-0741}{ORCID})
+
+Authors:
+\itemize{
+  \item Mo Yusuf \email{mohamedayusuf87@gmail.com} (\href{https://orcid.org/0000-0002-9339-4613}{ORCID})
+}
 
 }
 \keyword{internal}
