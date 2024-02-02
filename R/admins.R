@@ -17,6 +17,16 @@ admin_match <- function(admins, country = "SOM") {
      new[is.na(new)] <- som_admins[mtchs, 2]
    }
 
+ } else if(country == "KEN"){
+   mtch <- match(text_simplify(admins), text_simplify(ken_admins[, 1]))
+   new <- ken_admins[mtch, 2]
+
+   if(any(is.na(new))) {
+     message("Direct Matches Not Found. May use fuzzy matching")
+     missing <- admins[is.na(new)]
+     mtchs <- match_clean(missing, ken_admins[, 2], quiet = !mast_loud())
+     new[is.na(new)] <- ken_admins[mtchs, 2]
+   }
  }
 
   return(new)

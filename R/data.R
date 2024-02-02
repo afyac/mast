@@ -19,3 +19,10 @@
 #'
 #' @format A data.frame of "Causes" and "code"
 "causes_of_death"
+
+#' Kenya Admin Names
+#'
+#' A data frame of admin names to match against
+#'
+#' @format A data.frame of "wrong" (all names) and "right" (names to use)
+"ken_admins"

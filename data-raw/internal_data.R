@@ -3,4 +3,4 @@
 
 
 # What are we alwasy saving
-usethis::use_data(som_admins, causes_of_death, overwrite = TRUE, internal = TRUE)
+usethis::use_data(som_admins, causes_of_death, ken_admins, overwrite = TRUE, internal = TRUE)
