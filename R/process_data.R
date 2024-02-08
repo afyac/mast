@@ -55,7 +55,7 @@ f_categorise <- function(data, breaks_and_labels) {
   for (prefix in names(breaks_and_labels)) {
     selected_columns <- select_columns(data_transformed, prefix)
     data_transformed <- data_transformed |>
-      dplyr::mutate(across(
+      dplyr::mutate(aplyr::across(
         .cols = dplyr::all_of(selected_columns),
         .fns = ~ cut_variable(.x,
                               breaks = breaks_and_labels[[prefix]]$breaks,
@@ -90,14 +90,14 @@ f_complete_mice <- function(data, variable, col_admin2){
   predictors_complete <- mice::complete(mice_mod)
 
   # smooth function
-  smooth_f <- smooth.spline(na.omit(data[,'time_unit'], data[, variable]),
+  smooth_f <- stats::smooth.spline(stats::na.omit(data[,'time_unit'], data[, variable]),
                             spar = 0.4)
 
   # smooth water prices over times
   predictors_complete <- predictors_complete |>
     dplyr::group_by(lapply(col_admin2, as.vector)[[1]]) |>
     dplyr::mutate(
-      !!as.vector(paste(variable, '_smooth', sep="")) := predict(smooth_f, time_unit)$y
+      !!as.vector(paste(variable, '_smooth', sep="")) := stats::predict(smooth_f, time_unit)$y
     ) |>
     dplyr::ungroup()
 
@@ -183,7 +183,7 @@ f_categorise <- function(data, breaks_and_labels) {
   for (prefix in names(breaks_and_labels)) {
     selected_columns <- select_columns(data_transformed, prefix)
     data_transformed <- data_transformed |>
-      dplyr::mutate(across(
+      dplyr::mutate(dplyr::across(
         .cols = tidyr::all_of(selected_columns),
         .fns = ~ cut_variable(.x,
                               breaks = breaks_and_labels[[prefix]]$breaks,
