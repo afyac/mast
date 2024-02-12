@@ -9,15 +9,15 @@
 #' @return [data.frame] DataFrame with the addition lag variables
 #' @importFrom rlang .data
 #' @export
-f_create_lags <- function(data, vars, col_admin2, col_admin1, lags = 1:6) {
+f_create_lags <- function(data, vars,  lags = 1:6) {
   data <- data |>
     dplyr::mutate(date = as.Date(paste(year, month, "01", sep="-"), "%Y-%m-%d")) |>
-    dplyr::arrange(!!col_admin2, !!col_admin1, date)
+    dplyr::arrange(district, region, date)
 
   for (var in vars) {
     for (lag in lags) {
       data <- data |>
-        dplyr::group_by(!!col_admin2, !!col_admin1) |>
+        dplyr::group_by(district, region) |>
         dplyr::mutate(!!paste0(var, "_lag", lag) := dplyr::lag(.data[[var]], lag))
     }
   }
@@ -89,15 +89,13 @@ f_complete_mice <- function(data, variable, col_admin2){
   # get complete data and remove the predictors to impute water price
   predictors_complete <- mice::complete(mice_mod)
 
-  # smooth function
-  smooth_f <- stats::smooth.spline(stats::na.omit(data[,'time_unit'], data[, variable]),
-                            spar = 0.4)
-
   # smooth water prices over times
   predictors_complete <- predictors_complete |>
-    dplyr::group_by(lapply(col_admin2, as.vector)[[1]]) |>
+    dplyr::group_by(district) |>
     dplyr::mutate(
-      !!as.vector(paste(variable, '_smooth', sep="")) := stats::predict(smooth_f, time_unit)$y
+      water_price_smooth = predict(
+        smooth.spline(na.omit(cbind(time_unit, water_price)),
+                      spar = 0.4), time_unit)$y
     ) |>
     dplyr::ungroup()
 
@@ -116,7 +114,7 @@ f_complete_mice <- function(data, variable, col_admin2){
 #' @export
 f_rate_variables <- function(data, pred_rates, col_admin2, col_pop){
   data <- data |>
-    dplyr::group_by(lapply(col_admin2, as.vector)[[1]], date) |>
+    dplyr::group_by(district, date) |>
     dplyr::mutate(dplyr::across(
       .cols = tidyr::all_of(pred_rates),
       .fns = ~ (.x * 1e5) / !!rlang::sym(col_pop),
