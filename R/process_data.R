@@ -1,31 +1,3 @@
-#' Transform Variables into Lagged Variables
-#'
-#' @details Modify the variable into a lagged variable
-#' @param data DataFrame where the variable to lag is
-#' @param vars Variable names to lag
-#' @param lags Sequence of lags
-#' @param col_admin2 colnames of admin2 level
-#' @param col_admin1 colnames of admin1 level
-#' @return [data.frame] DataFrame with the addition lag variables
-#' @importFrom rlang .data
-#' @export
-f_create_lags <- function(data, vars,  lags = 1:6) {
-  data <- data |>
-    dplyr::mutate(date = as.Date(paste(year, month, "01", sep="-"), "%Y-%m-%d")) |>
-    dplyr::arrange(district, region, date)
-
-  for (var in vars) {
-    for (lag in lags) {
-      data <- data |>
-        dplyr::group_by(district, region) |>
-        dplyr::mutate(!!paste0(var, "_lag", lag) := dplyr::lag(.data[[var]], lag))
-    }
-  }
-  data <- data |> dplyr::ungroup()
-
-  return(data)
-}
-
 #' Transform Variables into Categorical Variables
 #'
 #' @details Modify the variable into transformed variables
@@ -114,7 +86,7 @@ f_complete_mice <- function(data, variable, col_admin2){
 #' @export
 f_rate_variables <- function(data, pred_rates, col_admin2, col_pop){
   data <- data |>
-    dplyr::group_by(district, date) |>
+    dplyr::group_by(dplyr::across(c(col_admin2, date))) |>
     dplyr::mutate(dplyr::across(
       .cols = tidyr::all_of(pred_rates),
       .fns = ~ (.x * 1e5) / !!rlang::sym(col_pop),
@@ -142,7 +114,7 @@ f_create_lags <- function(data, vars, col_admin2, col_admin1, lags = 1:6) {
   for (var in vars) {
     for (lag in lags) {
       data <- data |>
-        dplyr::group_by(!!col_admin1, !!col_admin2) |>
+        dplyr::group_by(dplyr::across(c(col_admin2, col_admin1))) |>
         dplyr::mutate(!!paste0(var, "_lag", lag) := dplyr::lag(.data[[var]], lag))
     }
   }
