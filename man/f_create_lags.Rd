@@ -2,10 +2,8 @@
 % Please edit documentation in R/process_data.R
 \name{f_create_lags}
 \alias{f_create_lags}
-\title{Transform Variables into Lagged Variables}
+\title{Create lags}
 \usage{
-f_create_lags(data, vars, col_admin2, col_admin1, lags = 1:6)
-
 f_create_lags(data, vars, col_admin2, col_admin1, lags = 1:6)
 }
 \arguments{
@@ -20,17 +18,11 @@ f_create_lags(data, vars, col_admin2, col_admin1, lags = 1:6)
 \item{lags}{lagged time}
 }
 \value{
-\link{data.frame} DataFrame with the addition lag variables
-
 \link{data.frame} DataFrame completed
 }
 \description{
-Transform Variables into Lagged Variables
-
 Create lags
 }
 \details{
-Modify the variable into a lagged variable
-
 Modify the dataset in order to lags some variable
 }

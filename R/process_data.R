@@ -109,8 +109,8 @@ f_rate_variables <- function(data, pred_rates, col_admin2, col_pop){
 f_create_lags <- function(data, vars, col_admin2, col_admin1, lags = 1:6) {
   data <- data |>
     dplyr::mutate(date = as.Date(paste(year, month, "01", sep="-"), "%Y-%m-%d")) |>
-    dplyr::arrange(!!col_admin1, !!col_admin2, date)
-
+    dplyr::arrange(dplyr::across(c(col_admin1, col_admin2, date)))
+  print('changement')
   for (var in vars) {
     for (lag in lags) {
       data <- data |>
