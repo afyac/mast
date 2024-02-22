@@ -5,6 +5,14 @@
 #' @format A data.frame of "full" (all names) and "old" (names to use)
 "som_admins"
 
+
+#' Somalia Admin 2 Names with region and code
+#'
+#' A data frame of admin with region, district and code
+#'
+#' @format A data.frame of district, region and code
+"som_admin2"
+
 #' Somalia Shape File
 #'
 #' Shape file for Somalia
