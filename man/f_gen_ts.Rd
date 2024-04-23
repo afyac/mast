@@ -6,6 +6,7 @@
 \usage{
 f_gen_ts(
   admin2_f,
+  name_col,
   y_start = 2014,
   y_end = 2023,
   m_start = 1,

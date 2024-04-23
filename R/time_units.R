@@ -10,7 +10,7 @@
 #' @param burn_out_period by how many years to extend period forward.Defaults 0.
 #' @return [data.frame] cross join time units and admin2 levels
 #' @export
-f_gen_ts <- function(admin2_f, y_start = 2014,
+f_gen_ts <- function(admin2_f, name_col, y_start = 2014,
                      y_end = 2023, m_start = 1, m_end=12,
                      burn_in_period = 1,
                      burn_out_period = 0) {
@@ -26,11 +26,11 @@ f_gen_ts <- function(admin2_f, y_start = 2014,
                     when$burn_in_period ) * 12 + when$m_end - when$m_start + 1 ), 1)
 
   # Create a time series of district-year-months
-  ts <- expand.grid(sort(unique(admin2_f$district)), tm)
-  colnames(ts) <- c("district", "time_unit")
+  ts <- expand.grid(sort(unique(admin2_f[[name_col]])), tm)
+  colnames(ts) <- c(name_col, "time_unit")
 
   # Add regions and mega-regions
-  ts <- merge(ts, admin2_f, by = "district", all.x = TRUE)
+  ts <- merge(ts, admin2_f, by = name_col, all.x = TRUE)
 
   # Work out corresponding year, month and date values
   ts$year <- floor( (ts$time_unit + when$m_start - 2) / 12) + (when$y_start -
@@ -40,7 +40,7 @@ f_gen_ts <- function(admin2_f, y_start = 2014,
   ts$date <- lubridate::ymd(paste(ts$year, ts$month, "1", sep = "-"))
 
   # Sort time series
-  ts <- ts[order(ts[, "district"], ts[, "time_unit"]), ]
+  ts <- ts[order(ts[, name_col], ts[, "time_unit"]), ]
 
   return(ts)
 }

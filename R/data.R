@@ -34,3 +34,10 @@
 #'
 #' @format A data.frame of "wrong" (all names) and "right" (names to use)
 "ken_admins"
+
+#' Kenya Admin 2 Names with counties and code
+#'
+#' A data frame of admin with counties, sub counties and code
+#'
+#' @format A data.frame of counties, subcounties and code
+"ken_admin2"
