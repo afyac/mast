@@ -63,10 +63,10 @@ f_complete_mice <- function(data, variable, col_admin2){
 
   # smooth water prices over times
   predictors_complete <- predictors_complete |>
-    dplyr::group_by(district) |>
+    dplyr::group_by(dplyr::across(col_admin2)) |>
     dplyr::mutate(
       water_price_smooth = predict(
-        smooth.spline(na.omit(cbind(time_unit, water_price)),
+        smooth.spline(na.omit(cbind(time_unit, variable)),
                       spar = 0.4), time_unit)$y
     ) |>
     dplyr::ungroup()
