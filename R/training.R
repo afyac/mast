@@ -8,9 +8,9 @@
 f_clean_metadata <- function(metadata, ts){
   ts <- ts |> dplyr::select(year, month, time_unit) |> dplyr::distinct()
   # Generate necessary time quantities for calculation
-  metadata$end_recall_date <- as.Date(metadata$End_Date) -
-    (as.Date(metadata$End_Date) - as.Date(metadata$Start_Date))/2
-  metadata$start_recall_date <- as.Date(metadata$end_recall_date) - metadata$Recall_Days
+  metadata$end_recall_date <- as.Date(metadata$end_date) -
+    (as.Date(metadata$end_date) - as.Date(metadata$start_date))/2
+  metadata$start_recall_date <- as.Date(metadata$end_recall_date) - metadata$recall_days
   metadata$year_end_recall_date <- lubridate::year(metadata$end_recall_date)
   metadata$month_end_recall_date <- lubridate::month(metadata$end_recall_date)
   metadata$year_start_recall_date <- lubridate::year(metadata$start_recall_date)
@@ -30,7 +30,7 @@ f_clean_metadata <- function(metadata, ts){
     dplyr::rename(time_unit_recall_end = time_unit)
 
   # merge metadata with time units - to have a mid time unit
-  metadata$recall_mid <- as.Date(metadata$End_Date) - metadata$Recall_Days/2
+  metadata$recall_mid <- as.Date(metadata$end_date) - metadata$recall_days/2
   metadata$year_recall_mid <- lubridate::year(metadata$recall_mid)
   metadata$month_recall_mid <- lubridate::month(metadata$recall_mid)
   metadata <- merge(x=metadata, y=ts, by.x=c('year_recall_mid', 'month_recall_mid'),
@@ -50,7 +50,7 @@ f_clean_metadata <- function(metadata, ts){
 ## Function to calculate surveys coverage
 f_calc_days <- function(f_surveys_cov, f_df) {
   # select survey
-  s <- subset(f_df, SurveyID == f_surveys_cov["surveyId"])
+  s <- subset(f_df, survey_id == f_surveys_cov["surveyId"])
   tm_now <- as.integer(f_surveys_cov["time_unit"])
   c1 <- as.integer(s["time_unit_recall_start"]) - tm_now
   c2 <- as.integer(s["time_unit_recall_end"])- tm_now
@@ -89,34 +89,36 @@ f_calculate_weighted_predictors <- function(predictors_data, ts, surveys_cov,
   for(survey_id in unique(surveys_cov$surveyId)){
     ## select one smart surveys
     sub_hh_obs <- hh_obs_complete |> dplyr::filter(surveyId == survey_id)
+    if(nrow(sub_hh_obs) != 0){
+      ## select the time covered by this smart surveys
+      sub_cov <- surveys_cov |> dplyr::filter(surveyId == survey_id &
+                                                time_unit %in% seq(unique(sub_hh_obs$time_unit_recall_start),
+                                                                   unique(sub_hh_obs$time_unit_recall_end)))
 
-    ## select the time covered by this smart surveys
-    sub_cov <- surveys_cov |> dplyr::filter(surveyId == survey_id &
-                                              time_unit %in% seq(unique(sub_hh_obs$time_unit_recall_start),
-                                                                 unique(sub_hh_obs$time_unit_recall_end)))
+      ## Select the predictor variables during these time and localisation
+      sub_pred <- subset(predictors_data,
+                         predictors_data[, col_admin2] == unique(sub_hh_obs[, col_admin2]) &
+                           predictors_data$time_unit %in%
+                           seq(unique(sub_hh_obs$time_unit_recall_start), unique(sub_hh_obs$time_unit_recall_end)))
 
-    ## Select the predictor variables during these time and localisation
-    sub_pred <- subset(predictors_data,
-                       predictors_data[, col_admin2] == unique(sub_hh_obs[, col_admin2]) &
-                         predictors_data$time_unit %in%
-                         seq(unique(sub_hh_obs$time_unit_recall_start), unique(sub_hh_obs$time_unit_recall_end)))
-
-    if(nrow(sub_pred)!=0){
-      ## sum the different values for the different variables
-      aggr <- data.frame(colSums(sub_pred[,variables]*sub_cov$month_coverage,
-                                 na.rm=TRUE))
-      ## divide by the weight = month coverage
-      aggr <- data.frame(aggr/sum(sub_cov$month_coverage,na.rm=TRUE))
-      aggr <- cbind('names' = rownames(aggr), aggr)
-      rownames(aggr) <- 1:nrow(aggr)
-      colnames(aggr) <- c('names', 'values')
-      aggr$surveyId <- survey_id
-      if(nrow(data_final) == 0){
-        data_final <- aggr
-      }else{
-        data_final <- rbind(data_final, aggr)
+      if(nrow(sub_pred)!=0){
+        ## sum the different values for the different variables
+        aggr <- data.frame(colSums(sub_pred[,variables]*sub_cov$month_coverage,
+                                   na.rm=TRUE))
+        ## divide by the weight = month coverage
+        aggr <- data.frame(aggr/sum(sub_cov$month_coverage,na.rm=TRUE))
+        aggr <- cbind('names' = rownames(aggr), aggr)
+        rownames(aggr) <- 1:nrow(aggr)
+        colnames(aggr) <- c('names', 'values')
+        aggr$surveyId <- survey_id
+        if(nrow(data_final) == 0){
+          data_final <- aggr
+        }else{
+          data_final <- rbind(data_final, aggr)
+        }
       }
     }
+
   }
   data_final <- data_final |> tidyr::spread(names, values)
   return(data_final)
